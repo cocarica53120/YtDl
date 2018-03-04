@@ -1,0 +1,37 @@
+
+# Dev of feature RestApi
+# Create dir for this feature
+[colleta@centos3 RestApi]$ mkdir RestApi
+
+# Work on RestApi is done here....
+
+
+# Create banch
+[colleta@centos3 RestApi]$ git checkout -b features/rest_api
+[colleta@centos3 RestApi]$ git branch -a
+* features/rest_api
+  master
+  remotes/origin/master
+[colleta@centos3 RestApi]$ git branch -l
+* features/rest_api
+  master
+
+
+# Commit
+[colleta@centos3 RestApi]$ cd ..
+
+
+[colleta@centos3 RestApi]$ git add RestApi
+[colleta@centos3 RestApi]$ git commit -m'First simple RestApi implement with express....'
+git status
+
+# Update and Push
+[colleta@centos3 RestApi]$ git fetch origin
+[colleta@centos3 RestApi]$ git rebase origin/master
+
+[colleta@centos3 RestApi]$ git push -u origin features/rest_api
+[colleta@centos3 RestApi]$ git branch -a
+
+
+
+
