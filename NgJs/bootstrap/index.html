@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- AngularJs must be called before bootstrap else, Angular Js is not detected/used -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <style>
+  .border {
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    margin: 6px;
+  }
+  </style>
+
+  <!--
+  -->
+</head>
+
+<body ng-app="myApp">
+
+<h1>Angular Examples </h1>
+
+<div class="card border-primary mb-3" style="max-width: 18rem;">
+    <h4 class="card-title">Panel title</h4>
+    <p class="card-text">Some quick example text to build on the panel title and make up the bulk of the panel's content.</p>
+    <div class="flex-row">
+        <a class="card-link">Card link</a>
+        <a class="card-link">Another link</a>
+    </div>
+</div>
+
+
+<div class="card border-primary mb-3" style="max-width: 18rem;">
+    <div class="container" ng-controller="nameController">
+      <h2>AngularJs</h2>
+      <p>Name: <input type="text" ng-model="name"></p>
+      <p>You wrote: {{ name }}</p> 
+    </div>
+</div>
+
+<script>
+angular.module('myApp', [])
+  .controller('nameController', ['$scope' , function($scope) {
+    console.log('in nameController');
+    $scope.name = "Alain";
+  }])
+  .controller('loginController', ['$scope', '$rootScope', function($scope, $rootScope) {
+    console.log('in loginController');
+    console.log($rootScope);
+    $scope.name = "Titi";
+    $scope.password = "12345";
+    $scope.persons = [
+      { firstname: "Alain", lastname: "COLLET", email: "ac@example.com" },
+      { firstname: "Juju", lastname: "COLLET", email: "jc@example.com" },
+      { firstname: "Alfred", lastname: "HITCOCK", email: "ah@example.com" },
+    ];
+    console.log('persons', $scope.persons);
+  }])
+</script>
+
+<h2> Some Bootstrap Examples inside AngularJs </h2>
+
+<div class="card border-primary mb-3" style="max-width: 38rem;">
+  <div class="container" ng-controller="loginController">
+    <div>
+      <h2>Form control: input</h2>
+      <p>The form below contains two input elements; one of type text and one of type password:</p>
+      <div class="form-group">
+        <label for="usr">Name:</label>
+        <input type="text" class="form-control" id="usr" ng-model="name">
+      </div>
+      <div class="form-group">
+        <label for="pwd">Password:</label>
+        <input type="password" class="form-control" id="pwd" ng-model="password">
+      </div>
+      <p> Your name is {{ name }} </p>
+      <p> Your password is {{ password }} </p>
+    </div>
+    <!--
+    <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+          <th>Firstname</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="name in ['Alain', 'Marie', 'Juju']">
+          <td> {{ name }} </td>
+        </tr>
+      </tbody>
+    </table>
+    <p> persons are {{ persons }} </p>
+    -->
+    <h2>Tables </h2>
+    <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="person in persons">
+          <td> {{ person.firstname }} </td>
+          <td> {{ person.lastname }} </td>
+          <td> {{ person.email }} </td>
+        </tr>
+      </tbody>
+    </table>
+    <!--
+    -->
+  </div>
+</div>
+<!--
+-->
+
+
+
+
+
+</br>
+
+<h1>Bootstrap Examples </h1>
+
+<div class="container">
+  <h2>Dark Striped Table</h2>
+  <p>Combine .table-dark and .table-striped to create a dark, striped table:</p>            
+  <table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>John</td>
+        <td>Doe</td>
+        <td>john@example.com</td>
+      </tr>
+      <tr>
+        <td>Mary</td>
+        <td>Moe</td>
+        <td>mary@example.com</td>
+      </tr>
+      <tr>
+        <td>July</td>
+        <td>Dooley</td>
+        <td>july@example.com</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+<div class="container">
+  <h2>Pill Badges</h2>
+  <span class="badge badge-pill badge-primary">Primary</span>
+  <span class="badge badge-pill badge-secondary">Secondary</span>
+  <span class="badge badge-pill badge-success">Success</span>
+  <span class="badge badge-pill badge-danger">Danger</span>
+  <span class="badge badge-pill badge-warning">Warning</span>
+  <span class="badge badge-pill badge-info">Info</span>
+  <span class="badge badge-pill badge-light">Light</span>
+  <span class="badge badge-pill badge-dark">Dark</span>
+</div>
+
+
+</br>
+
+<div class="btn-group btn-group-justified">
+  <button type="button" class="btn btn-primary">Apple</button>
+  <button type="button" class="btn btn-primary">Samsung</button>
+  <div class="btn-group btn-group-justified">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+       Sony
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">Tablet</a>
+      <a class="dropdown-item" href="#">Smartphone</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
