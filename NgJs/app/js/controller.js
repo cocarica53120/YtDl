@@ -1,10 +1,23 @@
 angular.module('myApp', [])
-  .controller('youTubeController', ['$scope' , function($scope) {
+  .controller('youTubeController', ['$scope', '$http', '$location', function($scope, $http, $location) {
     console.log('in youTubeController');
     $scope.ytLink = "https://www.youtube.com/watch?v=Rter-Np-Td0";
+		$scope.status_download = 'Nothing';
     $scope.startDownload = function() {
-      console.log(`Start Download ${$scope.ytLink}`);
-       
+			const url = `http://${$location.host()}:8081/api/start_download`;
+			const cmd = {link: $scope.ytLink};
+      console.log(`Start Download ${$scope.ytLink} at ${url}, cmd=${cmd}`);
+      $http.post(url, cmd).then(response => {
+				console.log('start_download:', response);
+			});
+    };
+    $scope.statusDownload = function() {
+			const url = `http://${$location.host()}:8081/api/status_download`;
+      console.log(`Status Download ${$scope.ytLink} at ${url}`);
+      $http.get(url).then(response => {
+				console.log('status_download:', response);
+				$scope.status_download = JSON.stringify(response.data.status);
+			});
     };
   }])
   .controller('nameController', ['$scope', '$http', '$location' , function($scope, $http, $location) {
@@ -43,4 +56,5 @@ angular.module('myApp', [])
     ];
     console.log('persons', $scope.persons);
   }])
+
 

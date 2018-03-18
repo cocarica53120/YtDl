@@ -41,6 +41,11 @@
         <input type="text" class="form-control" id="yt_link" ng-model="ytLink">
       </div>
       <button type="button" ng-click="startDownload()" class="btn btn-primary">Download</button>
+   	  <div class="form-group">
+      	<button type="button" ng-click="statusDownload()" class="btn btn-primary">Status</button>
+        <label for="yt_status"> Status is {{ status_download }} </label>
+      </div>
+
   </div>
 </div>
 
