@@ -26,7 +26,6 @@ app.get('/listUsers', function (req, res) {
 
 
 
-
 app.get('/listText', function (req, res) {
    fs.readFile( __dirname + "/" + "json.txt", 'utf8', function (err, data) {
        console.log( data );
@@ -36,14 +35,69 @@ app.get('/listText', function (req, res) {
 
 
 
+
+//https://www.youtube.com/watch?v=klS5bqrxve8
+app.get('/api/downloads', function(req, res) {
+  console.log('get downloads');
+  var link = req.param('link');
+  console.log(link)
+  fs.readFile( __dirname + "/../" + "downloads.json", 'utf8', function (err, data) {
+    console.log( data );
+    res.end( data );
+  });
+  //res.send('GET DOWNLOAD LINK: ' + link);
+});
+
+var current_link;
+
+app.post('/api/downloads', function(req, res) {
+  console.log('post downloads');
+  var link = req.body.link;
+  console.log('link', link)
+  //fs.writeFile( __dirname + "/../" + "downloads.json", link, 'utf8', function (err) {
+  fs.appendFile( __dirname + "/../" + "downloads_post.json", link + '\n', 'utf8', function (err) {
+    //if (err) throw err;
+    if (err) {
+      res.end('the HAS NOT been saved!!!!!');
+    } else {
+      console.log('the file has been saved');
+      current_link = link;
+      res.end('POST DOWNLOAD LINK: ' + current_link);
+    }
+  });
+
+});
+
+
+const download = require('./download.js');
+const downloader = new download.Downloader();
+
+// Launch of Downloader
+app.post('/api/start_download', function(req, res) {
+	console.log('/api/start_download');
+  res.send(`note: process launched\n`);
+	const status = downloader.download();
+	console.log('status from download()', status);
+	
+});
+
+
+// Status of Downloader
+app.get('/api/status_download', function(req, res) {
+		const status = downloader.status();
+		res.end(status);
+});
+
+
+
 var port = process.env.PORT || 8081;
 
 
 // start the server
 var server = app.listen(port, () => {
 
-	var host = server.address().address
-	port = server.address().port
-	console.log('Server started! At http://localhost:' + port);
+  var host = server.address().address
+  port = server.address().port
+  console.log('Server started! At http://localhost:' + port);
 
 });
