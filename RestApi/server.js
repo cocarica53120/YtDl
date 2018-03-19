@@ -74,9 +74,10 @@ const downloader = new download.Downloader();
 
 // Launch of Downloader
 app.post('/api/start_download', function(req, res) {
-	console.log('/api/start_download');
+	console.log('/api/start_download. req=', req);
   res.send(`note: process launched\n`);
-	const status = downloader.download();
+	const link = req.body.link;
+	const status = downloader.download(link);
 	console.log('status from download()', status);
 	
 });

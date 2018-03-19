@@ -1,24 +1,33 @@
 angular.module('myApp', [])
-  .controller('youTubeController', ['$scope', '$http', '$location', function($scope, $http, $location) {
+  .controller('youTubeController', ['$scope', '$http', '$location', '$interval', function($scope, $http, $location, $interval) {
     console.log('in youTubeController');
     $scope.ytLink = "https://www.youtube.com/watch?v=Rter-Np-Td0";
-		$scope.status_download = 'Nothing';
+    $scope.status_download = 'Nothing';
+    $scope.progress_download = 0;
+
     $scope.startDownload = function() {
-			const url = `http://${$location.host()}:8081/api/start_download`;
-			const cmd = {link: $scope.ytLink};
+      const url = `http://${$location.host()}:8081/api/start_download`;
+      const cmd = {link: $scope.ytLink};
       console.log(`Start Download ${$scope.ytLink} at ${url}, cmd=${cmd}`);
       $http.post(url, cmd).then(response => {
-				console.log('start_download:', response);
-			});
+        console.log('start_download:', response);
+      });
     };
     $scope.statusDownload = function() {
-			const url = `http://${$location.host()}:8081/api/status_download`;
+      const url = `http://${$location.host()}:8081/api/status_download`;
       console.log(`Status Download ${$scope.ytLink} at ${url}`);
       $http.get(url).then(response => {
-				console.log('status_download:', response);
-				$scope.status_download = JSON.stringify(response.data.status);
-			});
+        console.log('status_download:', response);
+        $scope.status_download = JSON.stringify(response.data.status);
+        $scope.progress_download = JSON.stringify(response.data.progress.percent);
+        console.log('progress_download:', $scope.progress_download);
+      });
     };
+
+		$interval(function () {
+      $scope.statusDownload();
+		}, 500);
+
   }])
   .controller('nameController', ['$scope', '$http', '$location' , function($scope, $http, $location) {
     // Before, Launch  RestApi server (located in RestApi dir)
