@@ -24,9 +24,9 @@ angular.module('myApp', [])
       });
     };
 
-		$interval(function () {
+    $interval(function () {
       $scope.statusDownload();
-		}, 500);
+    }, 500);
 
   }])
   .controller('nameController', ['$scope', '$http', '$location' , function($scope, $http, $location) {
