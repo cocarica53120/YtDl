@@ -4,6 +4,7 @@ angular.module('myApp', [])
     $scope.ytLink = "https://www.youtube.com/watch?v=Rter-Np-Td0";
     $scope.status_download = 'Nothing';
     $scope.progress_download = 0;
+		$scope.progress_bar = 0;
 
     $scope.startDownload = function() {
       const url = `http://${$location.host()}:8081/api/start_download`;
@@ -20,7 +21,11 @@ angular.module('myApp', [])
         console.log('status_download:', response);
         $scope.status_download = JSON.stringify(response.data.status);
         $scope.progress_download = JSON.stringify(response.data.progress.percent);
+				$scope.progress_bar = {
+					width: response.data.progress.percent + '%'
+				};
         console.log('progress_download:', $scope.progress_download);
+        console.log('progress_bar:', $scope.progress_bar);
       });
     };
 

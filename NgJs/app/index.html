@@ -48,20 +48,10 @@
         <label for="yt_progress"> Progress : {{progress_download}}% </label>
       </div>
       <div class="progress">
-        <!--
-        <div class="progress-bar" role="progressbar" style="width: 25%" 
-            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" role="progressbar" ng-style="progress_bar" 
+            aria-valuenow="progress_bar" aria-valuemin="0" aria-valuemax="100">
         </div>
-
-
-				https://stackoverflow.com/questions/20861313/change-bootstrap-progress-bar-width-from-angularjs
-        <div class="progress-bar" role="progressbar" ng-style="{width : progress_download + '%'}" 
-            aria-valuenow="{{progress_download}}" aria-valuemin="0" aria-valuemax="100">
-        </div>
-        -->
       </div>
-			<uib-progressbar max="max" value="dynamic"><span style="color:white; white-space:nowrap;">{{progress_download}} / 100</span></uib-progressbar>
-
   </div>
 </div>
 
