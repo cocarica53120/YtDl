@@ -18,40 +18,40 @@ class Downloader {
   status(link) {
     return JSON.stringify({
       status: this.state,
-			progress: this.downloadProgress,
+      progress: this.downloadProgress,
     });
   }
 
   analyzeDownload(str) {
 
     //const str = "[download]  45.2% of 11.36MiB at  1.04MiB/s ETA 00:06"
-   	//console.log('str', str);
+     //console.log('str', str);
 
-		let line = str.split('\n');
-		//console.log('line', line);
+    let line = str.split('\n');
+    //console.log('line', line);
  
     const pattern='(\\[download\\])(\\s*)(\\d*\\.\\d*)(% of )(\\d*\.\\d*)(.*B)(.*at\\s*)(\\d*\.\\d*)(.*B/s)(.*ETA )(\\d*:\\d*)(.*)'
     const re = RegExp(pattern);
 
-		str = line[0];
+    str = line[0];
     
     let found = str.match(re);
     
     if (found) {
-			//console.log('found', found, 'len', found.length);
-			const obj = {
-				type: found[1],
-				percent: found[3],
-				size: found[5],
-				sizeUnit: found[6],
-				rate: found[8],
-				rateUnit: found[9],
-				eta: found[11],
-			}
-			console.log('obj', obj);
-			this.downloadProgress = obj;
-		}
-		
+      //console.log('found', found, 'len', found.length);
+      const obj = {
+        type: found[1],
+        percent: found[3],
+        size: found[5],
+        sizeUnit: found[6],
+        rate: found[8],
+        rateUnit: found[9],
+        eta: found[11],
+      }
+      console.log('obj', obj);
+      this.downloadProgress = obj;
+    }
+    
   }
 
 
@@ -59,8 +59,7 @@ class Downloader {
   
     const cur_link = link || default_link;
   
-    if (this.state === 'init' ||
-        this.state === 'closed') {
+    if (this.state !== 'in_progress') {
 
       const pcs = spawn('youtube-dl', [ cur_link ]);
   
@@ -70,7 +69,7 @@ class Downloader {
       pcs.stdout.on('data', (data) => {
         //console.log(`${new Date()} : stdout: ${data}`);
         log_data += data;
-				this.analyzeDownload(`${data}`);
+        this.analyzeDownload(`${data}`);
       });
       
       pcs.stderr.on('data', (data) => {
@@ -97,41 +96,16 @@ class Downloader {
 }
 
 
-function download(link) {
-
-  const cur_link = link || default_link;
-
-  pcs = spawn('youtube-dl', [ cur_link ]);
-
-  console.log('downloading', cur_link);
-  
-  pcs.stdout.on('data', (data) => {
-    console.log(`${new Date()} : stdout: ${data}`);
-    log_data += data;
-  });
-  
-  pcs.stderr.on('data', (data) => {
-    console.log(`${new Date()} : stderr: ${data}`);
-  });
-  
-  pcs.on('close', (code) => {
-    console.log(`${new Date()} : child process exited with code ${code}`);
-    state = 'init';
-  });
-  
-  pcs.on('error', (err) => {
-    state = 'init';
-    console.log(`${new Date()} : Failed to start subprocess.`);
-  });
-  
-  return
-
-};
-
 module.exports = {
-  download,
   Downloader,
 };
+
+
+
+
+
+
+
 
 // json manip
 const obj = { 

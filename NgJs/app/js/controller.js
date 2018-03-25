@@ -4,14 +4,21 @@ angular.module('myApp', [])
     $scope.ytLink = "https://www.youtube.com/watch?v=Rter-Np-Td0";
     $scope.status_download = 'Nothing';
     $scope.progress_download = 0;
-		$scope.progress_bar = 0;
+    $scope.progress_bar = 0;
 
     $scope.startDownload = function() {
       const url = `http://${$location.host()}:8081/api/start_download`;
       const cmd = {link: $scope.ytLink};
       console.log(`Start Download ${$scope.ytLink} at ${url}, cmd=${cmd}`);
+      $scope.progress_bar = {
+        width: '0%'
+      };
+
       $http.post(url, cmd).then(response => {
         console.log('start_download:', response);
+      }, response => {
+        console.log(response);
+        alert(`Problem for downloading`);
       });
     };
     $scope.statusDownload = function() {
@@ -20,10 +27,12 @@ angular.module('myApp', [])
       $http.get(url).then(response => {
         console.log('status_download:', response);
         $scope.status_download = JSON.stringify(response.data.status);
-        $scope.progress_download = JSON.stringify(response.data.progress.percent);
-				$scope.progress_bar = {
-					width: response.data.progress.percent + '%'
-				};
+        if (response.data.status === 'in_progress' || $scope.progress_download !== 0) {
+          $scope.progress_download = JSON.stringify(response.data.progress.percent);
+          $scope.progress_bar = {
+            width: response.data.progress.percent + '%'
+          };
+        };
         console.log('progress_download:', $scope.progress_download);
         console.log('progress_bar:', $scope.progress_bar);
       });

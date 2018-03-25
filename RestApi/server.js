@@ -74,19 +74,22 @@ const downloader = new download.Downloader();
 
 // Launch of Downloader
 app.post('/api/start_download', function(req, res) {
-	console.log('/api/start_download. req=', req);
-  res.send(`note: process launched\n`);
-	const link = req.body.link;
-	const status = downloader.download(link);
-	console.log('status from download()', status);
-	
+  console.log('/api/start_download. req=', req);
+  const link = req.body.link;
+  if (link === "") {
+    res.status(404).end();
+  } else {
+    res.send(`note: process launched\n`);
+    const status = downloader.download(link);
+    console.log('status from download()', status);
+  }
 });
 
 
 // Status of Downloader
 app.get('/api/status_download', function(req, res) {
-		const status = downloader.status();
-		res.end(status);
+    const status = downloader.status();
+    res.end(status);
 });
 
 
