@@ -3,19 +3,21 @@
 
 // youtube-dl manip
 const { spawn } = require('child_process');
+const { exec } = require('child_process');
 default_link = 'https://www.youtube.com/watch?v=klS5bqrxve8'
 
-var log_data = '';
-var state = 'init';
 
 
 class Downloader {
 
   constructor() {
     this.state = 'init';
+    this.log_data = '';
+    this.pcs = undefined;
   }
 
   status(link) {
+    console.log('status(', link, ')', ' state', this.state, 'progress', this.downloadProgress);
     return JSON.stringify({
       status: this.state,
       progress: this.downloadProgress,
@@ -25,7 +27,7 @@ class Downloader {
   analyzeDownload(str) {
 
     //const str = "[download]  45.2% of 11.36MiB at  1.04MiB/s ETA 00:06"
-     //console.log('str', str);
+    console.log('str', str);
 
     let line = str.split('\n');
     //console.log('line', line);
@@ -56,32 +58,66 @@ class Downloader {
 
 
   download(link) {
-  
+
+ 
     const cur_link = link || default_link;
-  
+
+    console.log(cur_link);
+    const pattern='(http.*://www.youtube.com/watch\\?)(.*)'
+    const re = RegExp(pattern);
+
+    
+    let found = cur_link.match(re);
+    console.log('found', found);
+    
+    if (found) {
+      this.dir = found[2];
+      console.log('this.dir', this.dir);
+    } else {
+      console.log('cannot determine dir. So exiting!!!!');
+      this.state = "failed"
+      return this.state;
+    }
+   
     if (this.state !== 'in_progress') {
 
-      const pcs = spawn('youtube-dl', [ cur_link ]);
+      let cmd = `echo \'create dir ${this.dir}\' && `;
+      cmd += `mkdir ${this.dir} && `;
+      cmd += `cd ${this.dir} && `;
+      cmd += `echo ${cur_link} > download.log &&`;
+      cmd += `youtube-dl ${cur_link}`;
+
+      this.pcs = exec(`${cmd}`);
+
+      //this.pcs = exec(`echo \'create dir ${this.dir}\' && mkdir ${this.dir} && cd ${this.dir} && echo ${cur_link} > download.log && youtube-dl ${cur_link}`);
+      //const pcs = spawn('youtube-dl', [ cur_link ]);
+
+      let data = 'echo ';
+      data += JSON.stringify(this.pcs.pid);
+      data += ` >> ${this.dir}/download.log`
+      console.log('data', data);
+      exec(`${data}`);
   
+      //console.log('pcs', pcs, 'pid', pcs.pid);
       console.log('downloading', cur_link);
       this.state = 'in_progress';
       
-      pcs.stdout.on('data', (data) => {
-        //console.log(`${new Date()} : stdout: ${data}`);
-        log_data += data;
+      this.pcs.stdout.on('data', (data) => {
+        console.log(`${new Date()} : stdout: ${data}`);
+        this.log_data += data;
         this.analyzeDownload(`${data}`);
       });
       
-      pcs.stderr.on('data', (data) => {
+      this.pcs.stderr.on('data', (data) => {
         console.log(`${new Date()} : stderr: ${data}`);
       });
       
-      pcs.on('close', (code) => {
+      this.pcs.on('close', (code) => {
         console.log(`${new Date()} : child process exited with code ${code}`);
         this.state = 'closed';
       });
       
-      pcs.on('error', (err) => {
+      this.pcs.on('error', (err) => {
         this.state = 'error';
         console.log(`${new Date()} : Failed to start subprocess.`);
       });
@@ -96,35 +132,27 @@ class Downloader {
 }
 
 
+const downloader = new Downloader();
+
+const argv = process.argv;
+console.log('argv', process.argv);
+if (argv[2] === 'd') {
+  downloader.download('https://www.youtube.com/watch?v=4-G1JoK7VeQ');
+}
+
+
 module.exports = {
   Downloader,
 };
 
 
 
-
-
-
-
-
-// json manip
-const obj = { 
-  'addr': [
-    'coco',
-    'tata',
-  ]
-};
-
-const str = JSON.stringify(obj);
-console.log('obj', obj);
-console.log('str', str);
-
-
-// fs example.
-const fs = require('fs');
-    
-fs.readFile( __dirname + "/../" + "downloads.json", 'utf8', 
-  function (err, data) {
-  console.log( data );
-});
+//
+//// fs example.
+//const fs = require('fs');
+//    
+//fs.readFile( __dirname + "/../" + "downloads.json", 'utf8', 
+//  function (err, data) {
+//  console.log( data );
+//});
 
