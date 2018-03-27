@@ -82,7 +82,7 @@ class Downloader {
     if (this.state !== 'in_progress') {
 
       let cmd = `echo \'create dir ${this.dir}\' && `;
-      cmd += `mkdir ${this.dir} && `;
+      cmd += `mkdir ${this.dir} || `;
       cmd += `cd ${this.dir} && `;
       cmd += `echo ${cur_link} > download.log &&`;
       cmd += `youtube-dl ${cur_link}`;
