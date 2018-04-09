@@ -1,4 +1,7 @@
-angular.module('myApp', [])
+
+var myApp = angular.module('myApp', []);
+
+myApp
   .controller('youTubeController', ['$scope', '$http', '$location', '$interval', function($scope, $http, $location, $interval) {
     console.log('in youTubeController');
     $scope.ytLink = "https://www.youtube.com/watch?v=Rter-Np-Td0";
@@ -23,18 +26,26 @@ angular.module('myApp', [])
     };
     $scope.statusDownload = function() {
       const url = `http://${$location.host()}:8081/api/status_download`;
-      console.log(`Status Download ${$scope.ytLink} at ${url}`);
+      //console.log(`Status Download ${$scope.ytLink} at ${url}`);
       $http.get(url).then(response => {
-        console.log('status_download:', response);
+        //console.log('status_download:', response);
         $scope.status_download = JSON.stringify(response.data.status);
         if (response.data.status === 'in_progress' || $scope.progress_download !== 0) {
           $scope.progress_download = JSON.stringify(response.data.progress.percent);
+					let download_percent = parseFloat(response.data.progress.percent);
+					console.log('download_percent', download_percent, $scope.progress_download);
+
+					if (download_percent >= 100) {
+						$scope.$broadcast('eventDownload', { message: $scope.ytLink, percent: download_percent });
+						$scope.progress_download = 0;
+					}
+
           $scope.progress_bar = {
             width: response.data.progress.percent + '%'
           };
         };
         console.log('progress_download:', $scope.progress_download);
-        console.log('progress_bar:', $scope.progress_bar);
+        //console.log('progress_bar:', $scope.progress_bar);
       });
     };
 
@@ -81,3 +92,72 @@ angular.module('myApp', [])
   }])
 
 
+
+
+
+/**
+ * Contrôleur de l'application "Todo List" décrite dans le chapitre "La logique d'AngularJS".
+ */
+myApp.controller('todoCtrl', ['$scope',
+    function ($scope) {
+
+        // Pour manipuler plus simplement les todos au sein du contrôleur
+        // On initialise les todos avec un tableau vide : []
+        var todos = $scope.todos = [ 
+					{title: "Quoi", complete: false, info: "Je ne sais pas quoi mettre dans info"}
+
+				];
+
+				$scope.$on('eventDownload', function (event, args) {
+					$scope.message = args.message;
+//					console.log('message', $scope.message, 'event', event);
+//					if ($scope.message === "finished") {
+//						console.log('received FINISHED');
+            todos.push({
+                // on ajoute le todo au tableau des todos
+                title: $scope.message,
+								info: new Date(),
+                completed: true
+            });
+					//}
+				});
+        
+        // Ajouter un todo
+        $scope.addTodo = function () {
+            // .trim() permet de supprimer les espaces inutiles
+            // en début et fin d'une chaîne de caractères
+						console.log('addTodo', 'todos=', this.todos, 'newTodo', $scope.newTodo);	
+            var newTodo = $scope.newTodo.trim();
+            if (!newTodo.length) {
+                // éviter les todos vides
+                return;
+            }
+            todos.push({
+                // on ajoute le todo au tableau des todos
+                title: newTodo,
+                completed: false
+            });
+            // Réinitialisation de la variable newTodo
+            $scope.newTodo = '';
+        };
+
+        // Enlever un todo
+        $scope.removeTodo = function (todo) {
+            todos.splice(todos.indexOf(todo), 1);
+        };
+
+        // Cocher / Décocher tous les todos
+        $scope.markAll = function (completed) {
+            todos.forEach(function (todo) {
+                todo.completed = !completed;
+            });
+        };
+
+        // Enlever tous les todos cochés
+        $scope.clearCompletedTodos = function () {
+            $scope.todos = todos = todos.filter(function (todo) {
+                return !todo.completed;
+            });
+        };
+    }
+]);

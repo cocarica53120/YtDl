@@ -27,465 +27,189 @@
 
 <body ng-app="myApp">
 
-<h1>Angular Examples </h1>
+	<h1>Angular Examples </h1>
+	
+	<div class="container" ng-controller="youTubeController">
+	  <div class="card border-primary mb-3" style="max-width: 48rem;">
+	      <h4 class="card-title">Panel title</h4>
+	      <p class="card-text">Some quick example text to build on the panel title and make up the bulk of the panel's content.</p>
+	      <div class="flex-row">
+	          <a class="card-link" href="http://youtube.com" target="_blank">Youtube</a>
+	      </div>
+	      <div class="form-group">
+	        <label for="yt_link">Your Youtube Link to Download</label>
+	        <input type="text" class="form-control" id="yt_link" ng-model="ytLink">
+	        <button type="button" ng-click="startDownload()" class="btn btn-primary pull-right">Download</button>
+	      </div>
+	      <div class="form-group">
+	        <button type="button" ng-click="statusDownload()" class="btn btn-primary">Status</button></br>
+	
+	        <label for="yt_status"> Status : {{ status_download }} </label></br>
+	        <label for="yt_progress"> Progress : {{progress_download}}% </label>
+	      </div>
+	      <div class="progress">
+	        <div class="progress-bar" role="progressbar" ng-style="progress_bar" 
+	            aria-valuenow="progress_bar" aria-valuemin="0" aria-valuemax="100">
+	        </div>
+	      </div>
+	  </div>
 
-<div class="container" ng-controller="youTubeController">
-  <div class="card border-primary mb-3" style="max-width: 48rem;">
-      <h4 class="card-title">Panel title</h4>
-      <p class="card-text">Some quick example text to build on the panel title and make up the bulk of the panel's content.</p>
-      <div class="flex-row">
-          <a class="card-link" href="http://youtube.com" target="_blank">Youtube</a>
-      </div>
-      <div class="form-group">
-        <label for="yt_link">Your Youtube Link to Download</label>
-        <input type="text" class="form-control" id="yt_link" ng-model="ytLink">
-        <button type="button" ng-click="startDownload()" class="btn btn-primary pull-right">Download</button>
-      </div>
-      <div class="form-group">
-        <button type="button" ng-click="statusDownload()" class="btn btn-primary">Status</button></br>
-
-        <label for="yt_status"> Status : {{ status_download }} </label></br>
-        <label for="yt_progress"> Progress : {{progress_download}}% </label>
-      </div>
-      <div class="progress">
-        <div class="progress-bar" role="progressbar" ng-style="progress_bar" 
-            aria-valuenow="progress_bar" aria-valuemin="0" aria-valuemax="100">
-        </div>
-      </div>
-  </div>
-</div>
-
-
-<div class="card border-primary mb-3" style="max-width: 38rem;">
-    <div class="container" ng-controller="nameController">
-      <div class="form-group">
-      <h2>AngularJs</h2>
-      <p>Name: <input type="text" ng-model="name"></p>
-      <p>You wrote: {{ name }}</p> 
-      </div>
-    </div>
-</div>
-
-<h2> Some Bootstrap Examples inside AngularJs </h2>
-
-<div class="card border-primary mb-3" style="max-width: 38rem;">
-  <div class="container" ng-controller="loginController">
-    <div>
-      <h2>Form control: input</h2>
-      <p>The form below contains two input elements; one of type text and one of type password:</p>
-      <div class="form-group">
-        <label for="usr">Name:</label>
-        <input type="text" class="form-control" id="usr" ng-model="name">
-      </div>
-      <div class="form-group">
-        <label for="pwd">Password:</label>
-        <input type="password" class="form-control" id="pwd" ng-model="password">
-      </div>
-      <p> Your name is {{ name }} </p>
-      <p> Your password is {{ password }} </p>
-    </div>
-    <!--
-    <table class="table table-dark table-striped">
-      <thead>
-        <tr>
-          <th>Firstname</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="name in ['Alain', 'Marie', 'Juju']">
-          <td> {{ name }} </td>
-        </tr>
-      </tbody>
-    </table>
-    <p> persons are {{ persons }} </p>
-    -->
-    <h2>Tables </h2>
-    <table class="table table-dark table-striped">
-      <thead>
-        <tr>
-          <th>Firstname</th>
-          <th>Lastname</th>
-          <th>Email</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="person in persons">
-          <td> {{ person.firstname }} </td>
-          <td> {{ person.lastname }} </td>
-          <td> {{ person.email }} </td>
-        </tr>
-      </tbody>
-    </table>
-    <!--
-    -->
-  </div>
-</div>
-<!--
--->
+		</br>
+	
+	
+		<header>
+			<h2> One todo list Header </h2>
+		</header>
+	
+		<section ng-controller="todoCtrl">
+	
+			<form id="todo-form" ng-submit="addTodo()">
+			    <input id="new-todo" placeholder="Que devez-vous faire ?" ng-model="newTodo" />
+			</form>
+	
+			<article ng-show="todos.length">
+			    <ul id="todo-list">
+			        <li ng-repeat="todo in todos" ng-class="{completed: todo.completed}">
+			            <div class="view">
+			                <input class="mark" type="checkbox" ng-model="todo.completed" />
+			                <span>{{todo.title}}</span>
+			                <span class="close" ng-click="removeTodo(todo)">x</span>
+			            </div>
+			        </li>
+			    </ul>
+			    <input id="mark-all" type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)" />
+			    <label class="btn btn-info" for="mark-all">Tout cocher</label>
+					</br>
+			    <button class="btn btn-info" ng-click="clearCompletedTodos()">Supprimer les tâches cochées</button>
+			</article>
+	
+			<array>
+				<h2> Task Table </h2>
+		  	<table class="table table-dark table-striped">
+		  	  <thead>
+		  	    <tr>
+		  	      <th>Task</th>
+		  	      <th>Info</th>
+						</tr>
+		  	  </thead>
+		  	  <tbody>
+			        <tr ng-repeat="todo in todos" ng-class="{completed: todo.completed}">
+								<td> {{todo.title}} </td>
+								<td> {{todo.info}} </td>
+							</tr>
+		  	  </tbody>
+				</table>
+			</array>
+	
+		</section>
+	
+		<footer>
+			<h2> One todo list Footer </h2>
+		</footer>
+	
 
 
 
 
-
-</br>
-
-<h1>Bootstrap Examples </h1>
-
-<div class="container">
-  <h2>Dark Striped Table</h2>
-  <p>Combine .table-dark and .table-striped to create a dark, striped table:</p>            
-  <table class="table table-dark table-striped">
-    <thead>
-      <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Email</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>John</td>
-        <td>Doe</td>
-        <td>john@example.com</td>
-      </tr>
-      <tr>
-        <td>Mary</td>
-        <td>Moe</td>
-        <td>mary@example.com</td>
-      </tr>
-      <tr>
-        <td>July</td>
-        <td>Dooley</td>
-        <td>july@example.com</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-
-
-<div class="container">
-  <h2>Pill Badges</h2>
-  <span class="badge badge-pill badge-primary">Primary</span>
-  <span class="badge badge-pill badge-secondary">Secondary</span>
-  <span class="badge badge-pill badge-success">Success</span>
-  <span class="badge badge-pill badge-danger">Danger</span>
-  <span class="badge badge-pill badge-warning">Warning</span>
-  <span class="badge badge-pill badge-info">Info</span>
-  <span class="badge badge-pill badge-light">Light</span>
-  <span class="badge badge-pill badge-dark">Dark</span>
-</div>
-
-
-</br>
-
-<div class="container">
-  <div class="btn-group btn-group-justified">
-    <button type="button" class="btn btn-primary">Apple</button>
-    <button type="button" class="btn btn-primary">Samsung</button>
-    <div class="btn-group btn-group-justified">
-      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-         Sony
-      </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">Tablet</a>
-        <a class="dropdown-item" href="#">Smartphone</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-</br>
-
-<div class="container">
+	</div>
+	
+	</br>
+	
+	<h1>Bootstrap Examples </h1>
+	
+	<div class="container">
+	  <h2>Dark Striped Table</h2>
+	  <p>Combine .table-dark and .table-striped to create a dark, striped table:</p>            
+	  <table class="table table-dark table-striped">
+	    <thead>
+	      <tr>
+	        <th>Firstname</th>
+	        <th>Lastname</th>
+	        <th>Email</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr>
+	        <td>John</td>
+	        <td>Doe</td>
+	        <td>john@example.com</td>
+	      </tr>
+	      <tr>
+	        <td>Mary</td>
+	        <td>Moe</td>
+	        <td>mary@example.com</td>
+	      </tr>
+	      <tr>
+	        <td>July</td>
+	        <td>Dooley</td>
+	        <td>july@example.com</td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</div>
+	
+	
+	
+	<div class="container">
+	  <h2>Pill Badges</h2>
+	  <span class="badge badge-pill badge-primary">Primary</span>
+	  <span class="badge badge-pill badge-secondary">Secondary</span>
+	  <span class="badge badge-pill badge-success">Success</span>
+	  <span class="badge badge-pill badge-danger">Danger</span>
+	  <span class="badge badge-pill badge-warning">Warning</span>
+	  <span class="badge badge-pill badge-info">Info</span>
+	  <span class="badge badge-pill badge-light">Light</span>
+	  <span class="badge badge-pill badge-dark">Dark</span>
+	</div>
+	
+	
+	</br>
+	
+	<div class="container">
+	  <div class="btn-group btn-group-justified">
+	    <button type="button" class="btn btn-primary">Apple</button>
+	    <button type="button" class="btn btn-primary">Samsung</button>
+	    <div class="btn-group btn-group-justified">
+	      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+	         Sony
+	      </button>
+	      <div class="dropdown-menu">
+	        <a class="dropdown-item" href="#">Tablet</a>
+	        <a class="dropdown-item" href="#">Smartphone</a>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	</br>
+	
+	<div class="container">
+	  
+	  <!-- Trigger the modal with a button -->
+	  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+	  
+	  <!-- Modal -->
+	  <div id="myModal" class="modal fade" role="dialog">
+	    <div class="modal-dialog">
+	  
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">Modal Header</h4>
+	        </div>
+	        <div class="modal-body">
+	          <p>Some text in the modal.</p>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+	      </div>
+	  
+	    </div>
+	  </div>
+	</div>
   
-  <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
-  
-  <!-- Modal -->
-  <div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-          <p>Some text in the modal.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-  
-    </div>
-  </div>
-</div>
-  
-</br>
-
- 
-<div class="container">
-  <h2>Modal Login Example</h2>
-  <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-default btn-lg" id="myBtn">Login</button>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModalLogin" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header" style="padding:35px 50px;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4><span class="glyphicon glyphicon-lock"></span> Login</h4>
-        </div>
-        <div class="modal-body" style="padding:40px 50px;">
-          <form role="form">
-            <div class="form-group">
-              <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
-              <input type="text" class="form-control" id="usrname" placeholder="Enter email">
-            </div>
-            <div class="form-group">
-              <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-              <input type="text" class="form-control" id="psw" placeholder="Enter password">
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="" checked>Remember me</label>
-            </div>
-              <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Login</button>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-          <p>Not a member? <a href="#">Sign Up</a></p>
-          <p>Forgot <a href="#">Password?</a></p>
-        </div>
-      </div>
-      
-    </div>
-  </div> 
-</div>
- 
-<script>
-$(document).ready(function(){
-    $("#myBtn").click(function(){
-        $("#myModalLogin").modal();
-    });
-});
-</script>
-
-</br>
-
-
-
-
-
-<div class="container">
-  
-  <!--
-  ########### https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_todo #########
-  -->
-  <style>
-  body {
-    margin: 0;
-    min-width: 250px;
-  }
-  
-  /* Include the padding and border in an element's total width and height */
-  * {
-    box-sizing: border-box;
-  }
-  
-  /* Remove margins and padding from the list */
-  ul {
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Style the list items */
-  ul li {
-    cursor: pointer;
-    position: relative;
-    padding: 12px 8px 12px 40px;
-    list-style-type: none;
-    background: #eee;
-    font-size: 18px;
-    transition: 0.2s;
-    
-    /* make the list items unselectable */
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-  
-  /* Set all odd list items to a different color (zebra-stripes) */
-  ul li:nth-child(odd) {
-    background: #f9f9f9;
-  }
-  
-  /* Darker background-color on hover */
-  ul li:hover {
-    background: #ddd;
-  }
-  
-  /* When clicked on, add a background color and strike out text */
-  ul li.checked {
-    background: #888;
-    color: #fff;
-    text-decoration: line-through;
-  }
-  
-  /* Add a "checked" mark when clicked on */
-  ul li.checked::before {
-    content: '';
-    position: absolute;
-    border-color: #fff;
-    border-style: solid;
-    border-width: 0 2px 2px 0;
-    top: 10px;
-    left: 16px;
-    transform: rotate(45deg);
-    height: 15px;
-    width: 7px;
-  }
-  
-  /* Style the close button */
-  .close {
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding: 12px 16px 12px 16px;
-  }
-  
-  .close:hover {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  /* Style the header */
-  .header {
-    background-color: #f44336;
-    padding: 30px 40px;
-    color: white;
-    text-align: center;
-  }
-  
-  /* Clear floats after the header */
-  .header:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  
-  /* Style the input */
-  input {
-    border: none;
-    width: 75%;
-    padding: 10px;
-    float: left;
-    font-size: 16px;
-  }
-  
-  /* Style the "Add" button */
-  .addBtn {
-    padding: 10px;
-    width: 25%;
-    background: #d9d9d9;
-    color: #555;
-    float: left;
-    text-align: center;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .addBtn:hover {
-    background-color: #bbb;
-  }
-  </style>
-  </head>
-  <body>
-  
-  <div id="myDIV" class="header">
-    <h2 style="margin:5px">My To Do List</h2>
-    <input type="text" id="myInput" placeholder="Title...">
-    <span onclick="newElement()" class="addBtn">Add</span>
-  </div>
-  
-  <ul id="myUL">
-    <li>Hit the gym</li>
-    <li class="checked">Pay bills</li>
-    <li class="checked">Meet George</li>
-    <li>Buy eggs</li>
-    <li>Read a book</li>
-    <li>Organize office</li>
-  </ul>
-  
-  <script>
-  // Create a "close" button and append it to each list item
-  var myNodelist = document.getElementsByTagName("LI");
-  var i;
-  for (i = 0; i < myNodelist.length; i++) {
-    var span = document.createElement("SPAN");
-    var txt = document.createTextNode("\u00D7");
-    span.className = "close";
-    span.appendChild(txt);
-    myNodelist[i].appendChild(span);
-  }
-  
-  // Click on a close button to hide the current list item
-  var close = document.getElementsByClassName("close");
-  var i;
-  for (i = 0; i < close.length; i++) {
-    close[i].onclick = function() {
-      var div = this.parentElement;
-      div.style.display = "none";
-    }
-  }
-  
-  // Add a "checked" symbol when clicking on a list item
-  var list = document.querySelector('ul');
-  list.addEventListener('click', function(ev) {
-    if (ev.target.tagName === 'LI') {
-      ev.target.classList.toggle('checked');
-    }
-  }, false);
-  
-  // Create a new list item when clicking on the "Add" button
-  function newElement() {
-    var li = document.createElement("li");
-    var inputValue = document.getElementById("myInput").value;
-    var t = document.createTextNode(inputValue);
-    li.appendChild(t);
-    if (inputValue === '') {
-      alert("You must write something!");
-    } else {
-      document.getElementById("myUL").appendChild(li);
-    }
-    document.getElementById("myInput").value = "";
-  
-    var span = document.createElement("SPAN");
-    var txt = document.createTextNode("\u00D7");
-    span.className = "close";
-    span.appendChild(txt);
-    li.appendChild(span);
-  
-    for (i = 0; i < close.length; i++) {
-      close[i].onclick = function() {
-        var div = this.parentElement;
-        div.style.display = "none";
-      }
-    }
-  }
-  </script>
-
-</div>
-
-
 
 </body>
 </html>

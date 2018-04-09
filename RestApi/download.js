@@ -16,8 +16,8 @@ class Downloader {
     this.pcs = undefined;
   }
 
-  status(link) {
-    console.log('status(', link, ')', ' state', this.state, 'progress', this.downloadProgress);
+  status() {
+    console.log('status(', this.link, ')', ' state', this.state, 'progress', this.downloadProgress);
     return JSON.stringify({
       status: this.state,
       progress: this.downloadProgress,
@@ -59,12 +59,15 @@ class Downloader {
 
   download(link) {
 
+    this.downloadProgress = { percent: 0.0 };
  
     const cur_link = link || default_link;
 
     console.log(cur_link);
     const pattern='(http.*://www.youtube.com/watch\\?)(.*)'
     const re = RegExp(pattern);
+
+		this.link = cur_link;
 
     
     let found = cur_link.match(re);
