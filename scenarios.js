@@ -1,5 +1,11 @@
 'use strict';
 
+//https://dzone.com/articles/understanding-javascript-closures
+//https://stackoverflow.com/questions/750486/javascript-closure-inside-loops-simple-practical-example?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+//https://developer.mozilla.org/fr/docs/Web/JavaScript/Closures
+//https://stackoverflow.com/questions/21634558/looping-on-a-protractor-test-with-parameters?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+//https://stackoverflow.com/questions/27910331/using-protractor-with-loops?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+
 const _ = require('lodash');
 
 // Angular E2E Testing Guide:
